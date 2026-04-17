@@ -1,0 +1,21 @@
+{
+  "name": "AI托管云平台",
+  "short_name": "AI云平台",
+  "description": "为缺乏专业AI知识的创业者提供便捷的大模型定制服务",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6366f1",
+  "icons": [
+    {
+      "src": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=AI%20cloud%20platform%20logo%20with%20purple%20and%20blue%20gradient%2C%20modern%20and%20professional&image_size=square_hd",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=AI%20cloud%20platform%20logo%20with%20purple%20and%20blue%20gradient%2C%20modern%20and%20professional&image_size=square_hd",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt定制申请 - AI托管云平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#64748b',
+                        accent: '#10b981',
+                        danger: '#ef4444',
+                    },
+                },
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-primary">
+                <i class="fa fa-cloud"></i> AI托管云平台
+            </a>
+            <div class="flex items-center space-x-4">
+                <a href="services.html" class="text-gray-700 hover:text-primary">服务介绍</a>
+                <span id="userStatus"></span>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8">
+            <h2 class="text-2xl font-bold mb-6">Prompt定制申请</h2>
+            <form id="promptForm">
+                <div class="mb-4">
+                    <label for="template" class="block text-gray-700 mb-2">Prompt模板</label>
+                    <select id="template" name="template" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+                        <option value="">请选择</option>
+                        <option value="客服对话">客服对话</option>
+                        <option value="产品描述">产品描述</option>
+                        <option value="内容创作">内容创作</option>
+                        <option value="数据分析">数据分析</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="requirements" class="block text-gray-700 mb-2">自定义需求</label>
+                    <textarea id="requirements" name="requirements" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required></textarea>
+                </div>
+                <div class="mb-6">
+                    <label for="scenario" class="block text-gray-700 mb-2">应用场景</label>
+                    <select id="scenario" name="scenario" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+                        <option value="">请选择</option>
+                        <option value="电商">电商</option>
+                        <option value="医疗">医疗</option>
+                        <option value="教育">教育</option>
+                        <option value="金融">金融</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-primary text-white py-2 rounded-lg hover:bg-blue-600 font-bold">提交申请</button>
+            </form>
+        </div>
+    </div>
+    
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">AI托管云平台</h3>
+                    <p class="text-gray-400">为缺乏专业AI知识的创业者提供便捷的大模型定制服务</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">服务</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="apply_computing.html" class="hover:text-white">云算力租赁</a></li>
+                        <li><a href="apply_lora.html" class="hover:text-white">LoRA微调</a></li>
+                        <li><a href="apply_prompt.html" class="hover:text-white">Prompt定制</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">联系我们</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fa fa-envelope mr-2"></i> contact@aicloud.com</li>
+                        <li><i class="fa fa-phone mr-2"></i> 400-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 AI托管云平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // 检查用户登录状态
+        function checkLoginStatus() {
+            const user = localStorage.getItem('currentUser');
+            const userStatus = document.getElementById('userStatus');
+            if (user) {
+                userStatus.innerHTML = `
+                    <a href="dashboard.html" class="text-gray-700 hover:text-primary">用户中心</a>
+                    <button onclick="logout()" class="text-gray-700 hover:text-primary">退出登录</button>
+                `;
+            } else {
+                userStatus.innerHTML = `
+                    <a href="login.html" class="text-gray-700 hover:text-primary">登录</a>
+                    <a href="register.html" class="bg-primary text-white px-4 py-2 rounded hover:bg-blue-600">注册</a>
+                `;
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+        
+        // 检查登录状态
+        function checkLogin() {
+            const user = localStorage.getItem('currentUser');
+            if (!user) {
+                window.location.href = 'login.html';
+                return false;
+            }
+            return true;
+        }
+        
+        // Prompt定制申请表单处理
+        document.getElementById('promptForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!checkLogin()) return;
+            
+            const template = document.getElementById('template').value;
+            const requirements = document.getElementById('requirements').value;
+            const scenario = document.getElementById('scenario').value;
+            
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            
+            // 创建申请
+            const newApplication = {
+                id: Date.now(),
+                user_id: user.id,
+                type: 'prompt',
+                status: 'rejected',  // 自动设置为已否决
+                created_at: Date.now(),
+                details: `Template: ${template}, Requirements: ${requirements}, Scenario: ${scenario}`
+            };
+            
+            // 保存申请
+            let applications = JSON.parse(localStorage.getItem('applications')) || [];
+            applications.push(newApplication);
+            localStorage.setItem('applications', JSON.stringify(applications));
+            
+            // 跳转到用户中心
+            alert('申请提交成功，状态：已否决');
+            window.location.href = 'dashboard.html';
+        });
+        
+        // 页面加载时检查登录状态
+        window.onload = function() {
+            checkLoginStatus();
+            checkLogin();
+        };
+    </script>
+</body>
+</html>

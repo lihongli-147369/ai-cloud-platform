@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="max-w-4xl mx-auto">
+        <h2 class="text-2xl font-bold mb-6">用户中心</h2>
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h3 class="text-xl font-bold mb-4">我的申请</h3>
+            {% if applications %}
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="px-4 py-2 text-left">申请类型</th>
+                                <th class="px-4 py-2 text-left">状态</th>
+                                <th class="px-4 py-2 text-left">提交时间</th>
+                                <th class="px-4 py-2 text-left">详情</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for app in applications %}
+                                <tr class="border-b">
+                                    <td class="px-4 py-3">
+                                        {% if app.type == 'computing' %}云算力租赁
+                                        {% elif app.type == 'lora' %}LoRA微调
+                                        {% elif app.type == 'prompt' %}Prompt定制
+                                        {% endif %}
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <span class="px-2 py-1 rounded-full text-xs font-medium 
+                                            {% if app.status == 'pending' %}bg-yellow-100 text-yellow-800
+                                            {% elif app.status == 'approved' %}bg-green-100 text-green-800
+                                            {% elif app.status == 'rejected' %}bg-red-100 text-red-800
+                                            {% endif %}">
+                                            {{ app.status }}
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3">{{ app.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                    <td class="px-4 py-3">{{ app.details }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-gray-600">暂无申请记录</p>
+            {% endif %}
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a href="{{ url_for('apply_computing') }}" class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                <div class="flex items-center mb-4">
+                    <div class="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mr-4">
+                        <i class="fa fa-server text-2xl text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-bold">申请云算力</h3>
+                </div>
+                <p class="text-gray-600">选择GPU型号、内存配置和使用时长</p>
+            </a>
+            <a href="{{ url_for('apply_lora') }}" class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                <div class="flex items-center mb-4">
+                    <div class="bg-green-100 rounded-full w-12 h-12 flex items-center justify-center mr-4">
+                        <i class="fa fa-cogs text-2xl text-accent"></i>
+                    </div>
+                    <h3 class="text-xl font-bold">申请LoRA微调</h3>
+                </div>
+                <p class="text-gray-600">选择基础模型并上传训练数据</p>
+            </a>
+            <a href="{{ url_for('apply_prompt') }}" class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                <div class="flex items-center mb-4">
+                    <div class="bg-purple-100 rounded-full w-12 h-12 flex items-center justify-center mr-4">
+                        <i class="fa fa-magic text-2xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold">申请Prompt定制</h3>
+                </div>
+                <p class="text-gray-600">选择模板并描述具体需求</p>
+            </a>
+        </div>
+    </div>
+{% endblock %}

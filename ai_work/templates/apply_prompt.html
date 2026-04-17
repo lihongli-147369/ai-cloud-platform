@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8">
+        <h2 class="text-2xl font-bold mb-6">Prompt定制申请</h2>
+        <form method="POST">
+            <div class="mb-4">
+                <label for="template" class="block text-gray-700 mb-2">Prompt模板</label>
+                <select id="template" name="template" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+                    <option value="">请选择</option>
+                    <option value="客服对话">客服对话</option>
+                    <option value="产品描述">产品描述</option>
+                    <option value="内容创作">内容创作</option>
+                    <option value="数据分析">数据分析</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="requirements" class="block text-gray-700 mb-2">自定义需求</label>
+                <textarea id="requirements" name="requirements" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required></textarea>
+            </div>
+            <div class="mb-6">
+                <label for="scenario" class="block text-gray-700 mb-2">应用场景</label>
+                <select id="scenario" name="scenario" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+                    <option value="">请选择</option>
+                    <option value="电商">电商</option>
+                    <option value="医疗">医疗</option>
+                    <option value="教育">教育</option>
+                    <option value="金融">金融</option>
+                </select>
+            </div>
+            <button type="submit" class="w-full bg-primary text-white py-2 rounded-lg hover:bg-blue-600 font-bold">提交申请</button>
+        </form>
+    </div>
+{% endblock %}

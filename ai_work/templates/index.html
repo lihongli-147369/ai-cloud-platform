@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">AI托管云平台</h1>
+            <p class="text-xl mb-8">为缺乏专业AI知识的创业者提供便捷的大模型定制服务</p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="{{ url_for('register') }}" class="bg-white text-primary px-6 py-3 rounded-lg font-bold hover:bg-gray-100">立即注册</a>
+                <a href="{{ url_for('services') }}" class="border border-white text-white px-6 py-3 rounded-lg font-bold hover:bg-white hover:text-primary">了解服务</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">核心服务</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Computing Power -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mb-4">
+                        <i class="fa fa-server text-2xl text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">云算力租赁</h3>
+                    <p class="text-gray-600 mb-4">提供多种算力规格选择，包含GPU型号、内存配置、使用时长等选项</p>
+                    <a href="{{ url_for('apply_computing') }}" class="text-primary font-medium hover:underline">申请服务 →</a>
+                </div>
+                
+                <!-- LoRA Fine-tuning -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <div class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mb-4">
+                        <i class="fa fa-cogs text-2xl text-accent"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">LoRA微调</h3>
+                    <p class="text-gray-600 mb-4">支持选择基础模型（如GLM等开源模型）、上传训练数据、设置微调参数</p>
+                    <a href="{{ url_for('apply_lora') }}" class="text-primary font-medium hover:underline">申请服务 →</a>
+                </div>
+                
+                <!-- Prompt Customization -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <div class="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mb-4">
+                        <i class="fa fa-magic text-2xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Prompt定制</h3>
+                    <p class="text-gray-600 mb-4">提供Prompt模板选择、自定义需求描述、应用场景选择功能</p>
+                    <a href="{{ url_for('apply_prompt') }}" class="text-primary font-medium hover:underline">申请服务 →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- How It Works -->
+    <section class="bg-gray-100 py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">服务流程</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="text-center">
+                    <div class="bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">1</div>
+                    <h3 class="font-bold mb-2">注册登录</h3>
+                    <p class="text-gray-600">创建账户并登录平台</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">2</div>
+                    <h3 class="font-bold mb-2">选择服务</h3>
+                    <p class="text-gray-600">根据需求选择合适的服务类型</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">3</div>
+                    <h3 class="font-bold mb-2">提交申请</h3>
+                    <p class="text-gray-600">填写详细信息并提交申请</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">4</div>
+                    <h3 class="font-bold mb-2">状态查询</h3>
+                    <p class="text-gray-600">实时查看申请处理进度</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">客户案例</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center mr-4">
+                            <i class="fa fa-user text-gray-600"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">张总</h4>
+                            <p class="text-gray-600">医疗科技公司CEO</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700">"通过AI托管云平台的LoRA微调服务，我们成功定制了专属于医疗领域的大模型，大大提高了我们产品的智能化水平。"</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center mr-4">
+                            <i class="fa fa-user text-gray-600"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">李总</h4>
+                            <p class="text-gray-600">电商平台创始人</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700">"Prompt定制服务帮助我们优化了客户服务机器人的回答质量，提升了用户体验，同时降低了运营成本。"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
