@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI托管云平台</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.min.js"></script>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="AI托管云平台">
+    <link rel="apple-touch-icon" href="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=AI%20cloud%20platform%20logo%20with%20purple%20and%20blue%20gradient%2C%20modern%20and%20professional&image_size=square_hd">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#4f46e5',
+                        accent: '#06b6d4',
+                        gold: '#f59e0b',
+                        danger: '#ef4444',
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .fade-in {
+                opacity: 0;
+                transform: translateY(30px);
+                transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            }
+            .fade-in.active {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .smooth-scroll {
+                scroll-behavior: smooth;
+            }
+        }
+        @layer base {
+            body {
+                @apply font-inter smooth-scroll;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-inter">
+    <nav class="bg-white shadow-md fixed w-full z-50 top-0">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="flex items-center text-2xl font-bold text-primary">
+                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=AI%20cloud%20platform%20logo%20with%20purple%20and%20blue%20gradient%2C%20modern%20and%20professional&image_size=square_hd" alt="AI托管云平台" class="w-10 h-10 mr-2">
+                AI托管云平台
+            </a>
+            <!-- 桌面导航 -->
+            <div class="hidden md:flex items-center space-x-8">
+                <div class="relative group">
+                    <a href="services.html" class="text-gray-700 hover:text-primary flex items-center">
+                        服务介绍 <i class="fa fa-chevron-down ml-1 text-xs"></i>
+                    </a>
+                    <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg py-2 w-48 mt-2">
+                        <a href="apply_computing.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">云算力租赁</a>
+                        <a href="apply_lora.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">LoRA微调</a>
+                        <a href="apply_prompt.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Prompt定制</a>
+                    </div>
+                </div>
+                <a href="#" class="text-gray-700 hover:text-primary">关于我们</a>
+                <a href="#" class="text-gray-700 hover:text-primary">定价方案</a>
+                <a href="#" class="text-gray-700 hover:text-primary">FAQ</a>
+                <span id="userStatus"></span>
+            </div>
+            <!-- 移动端导航按钮 -->
+            <div class="md:hidden flex items-center">
+                <button id="mobileMenuButton" class="text-gray-700 hover:text-primary focus:outline-none">
+                    <i class="fa fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- 移动端导航菜单 -->
+        <div id="mobileMenu" class="md:hidden hidden bg-white shadow-lg absolute w-full">
+            <div class="container mx-auto px-4 py-3 space-y-4">
+                <div>
+                    <a href="services.html" class="block text-gray-700 hover:text-primary py-2">服务介绍</a>
+                    <div class="pl-4 space-y-2">
+                        <a href="apply_computing.html" class="block text-gray-700 hover:text-primary py-1">云算力租赁</a>
+                        <a href="apply_lora.html" class="block text-gray-700 hover:text-primary py-1">LoRA微调</a>
+                        <a href="apply_prompt.html" class="block text-gray-700 hover:text-primary py-1">Prompt定制</a>
+                    </div>
+                </div>
+                <a href="#" class="block text-gray-700 hover:text-primary py-2">关于我们</a>
+                <a href="#" class="block text-gray-700 hover:text-primary py-2">定价方案</a>
+                <a href="#" class="block text-gray-700 hover:text-primary py-2">FAQ</a>
+                <div id="mobileUserStatus"></div>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container mx-auto px-4 py-8">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-r from-secondary to-primary text-white py-20 md:py-28 relative overflow-hidden">
+            <!-- 3D背景 -->
+            <div id="hero3D" class="absolute inset-0 z-0"></div>
+            <!-- 动态背景粒子 -->
+            <div class="absolute inset-0 overflow-hidden z-0">
+                <div class="absolute top-0 left-0 w-full h-full opacity-20">
+                    <div class="absolute top-1/4 left-1/4 w-24 h-24 md:w-32 md:h-32 bg-white rounded-full blur-3xl"></div>
+                    <div class="absolute top-3/4 right-1/4 w-32 h-32 md:w-40 md:h-40 bg-gold rounded-full blur-3xl"></div>
+                    <div class="absolute bottom-1/4 left-1/3 w-20 h-20 md:w-24 md:h-24 bg-accent rounded-full blur-3xl"></div>
+                </div>
+            </div>
+            <div class="container mx-auto px-4 text-center relative z-10">
+                <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 md:mb-8 leading-tight">AI托管云平台</h1>
+                <p class="text-lg md:text-xl lg:text-2xl mb-8 md:mb-12 text-gray-100 max-w-3xl mx-auto">为缺乏专业AI知识的创业者提供便捷的大模型定制服务</p>
+                <div class="flex flex-col md:flex-row justify-center gap-4 md:gap-6">
+                    <a href="register.html" class="bg-gradient-to-r from-gold to-yellow-500 text-white px-6 md:px-8 py-3 md:py-4 rounded-lg font-bold hover:shadow-lg transition-all transform hover:scale-105 text-base md:text-lg">立即注册</a>
+                    <a href="services.html" class="border border-white text-white px-6 md:px-8 py-3 md:py-4 rounded-lg font-bold hover:bg-white hover:text-primary transition-all text-base md:text-lg">了解服务</a>
+                </div>
+
+            </div>
+        </section>
+        
+        <!-- Features Section -->
+        <section id="services" class="py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-12 md:mb-16">核心服务</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+                    <!-- Computing Power -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 fade-in">
+                        <div class="bg-indigo-100 rounded-full w-14 h-14 md:w-16 md:h-16 flex items-center justify-center mb-4 md:mb-6">
+                            <i class="fa fa-server text-xl md:text-2xl text-primary"></i>
+                        </div>
+                        <h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4">云算力租赁</h3>
+                        <p class="text-gray-600 mb-4 md:mb-6">提供多种算力规格选择，包含GPU型号、内存配置、使用时长等选项</p>
+                        <a href="apply_computing.html" class="text-primary font-medium hover:underline inline-flex items-center transition-all hover:translate-x-1">申请服务 <i class="fa fa-arrow-right ml-2"></i></a>
+                    </div>
+                    
+                    <!-- LoRA Fine-tuning -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 fade-in" style="transition-delay: 0.2s;">
+                        <div class="bg-cyan-100 rounded-full w-14 h-14 md:w-16 md:h-16 flex items-center justify-center mb-4 md:mb-6">
+                            <i class="fa fa-cogs text-xl md:text-2xl text-accent"></i>
+                        </div>
+                        <h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4">LoRA微调</h3>
+                        <p class="text-gray-600 mb-4 md:mb-6">支持选择基础模型（如GLM等开源模型）、上传训练数据、设置微调参数</p>
+                        <a href="apply_lora.html" class="text-primary font-medium hover:underline inline-flex items-center transition-all hover:translate-x-1">申请服务 <i class="fa fa-arrow-right ml-2"></i></a>
+                    </div>
+                    
+                    <!-- Prompt Customization -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 fade-in" style="transition-delay: 0.4s;">
+                        <div class="bg-purple-100 rounded-full w-14 h-14 md:w-16 md:h-16 flex items-center justify-center mb-4 md:mb-6">
+                            <i class="fa fa-magic text-xl md:text-2xl text-primary"></i>
+                        </div>
+                        <h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4">Prompt定制</h3>
+                        <p class="text-gray-600 mb-4 md:mb-6">提供Prompt模板选择、自定义需求描述、应用场景选择功能</p>
+                        <a href="apply_prompt.html" class="text-primary font-medium hover:underline inline-flex items-center transition-all hover:translate-x-1">申请服务 <i class="fa fa-arrow-right ml-2"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Service Comparison -->
+        <section class="bg-gray-100 py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">服务对比</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full bg-white rounded-lg shadow-lg">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="px-6 py-4 text-left">服务特性</th>
+                                <th class="px-6 py-4 text-center">云算力租赁</th>
+                                <th class="px-6 py-4 text-center">LoRA微调</th>
+                                <th class="px-6 py-4 text-center">Prompt定制</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b">
+                                <td class="px-6 py-4 font-medium">适用场景</td>
+                                <td class="px-6 py-4 text-center">需要大量计算资源的AI训练任务</td>
+                                <td class="px-6 py-4 text-center">需要定制特定领域模型的场景</td>
+                                <td class="px-6 py-4 text-center">需要优化模型输出质量的应用</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="px-6 py-4 font-medium">技术要求</td>
+                                <td class="px-6 py-4 text-center">低</td>
+                                <td class="px-6 py-4 text-center">中</td>
+                                <td class="px-6 py-4 text-center">低</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="px-6 py-4 font-medium">交付时间</td>
+                                <td class="px-6 py-4 text-center">即时</td>
+                                <td class="px-6 py-4 text-center">1-3天</td>
+                                <td class="px-6 py-4 text-center">1天内</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="px-6 py-4 font-medium">成本</td>
+                                <td class="px-6 py-4 text-center">按使用时长计费</td>
+                                <td class="px-6 py-4 text-center">按模型复杂度计费</td>
+                                <td class="px-6 py-4 text-center">固定费用</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium">推荐用户</td>
+                                <td class="px-6 py-4 text-center">有AI开发经验的团队</td>
+                                <td class="px-6 py-4 text-center">需要专业模型的企业</td>
+                                <td class="px-6 py-4 text-center">所有类型的用户</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <!-- How It Works -->
+        <section class="bg-gray-100 py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-12">服务流程</h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="text-center fade-in">
+                        <div class="bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">1</div>
+                        <h3 class="font-bold mb-2">注册登录</h3>
+                        <p class="text-gray-600">创建账户并登录平台</p>
+                    </div>
+                    <div class="text-center fade-in" style="transition-delay: 0.2s;">
+                        <div class="bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">2</div>
+                        <h3 class="font-bold mb-2">选择服务</h3>
+                        <p class="text-gray-600">根据需求选择合适的服务类型</p>
+                    </div>
+                    <div class="text-center fade-in" style="transition-delay: 0.4s;">
+                        <div class="bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">3</div>
+                        <h3 class="font-bold mb-2">提交申请</h3>
+                        <p class="text-gray-600">填写详细信息并提交申请</p>
+                    </div>
+                    <div class="text-center fade-in" style="transition-delay: 0.6s;">
+                        <div class="bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">4</div>
+                        <h3 class="font-bold mb-2">状态查询</h3>
+                        <p class="text-gray-600">实时查看申请处理进度</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Testimonials -->
+        <section class="py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-12">客户案例</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-lg shadow-md p-6 fade-in">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center mr-4">
+                                <i class="fa fa-user text-gray-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">张总</h4>
+                                <p class="text-gray-600">医疗科技公司CEO</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700">"通过AI托管云平台的LoRA微调服务，我们成功定制了专属于医疗领域的大模型，大大提高了我们产品的智能化水平。"</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6 fade-in" style="transition-delay: 0.2s;">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center mr-4">
+                                <i class="fa fa-user text-gray-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">李总</h4>
+                                <p class="text-gray-600">电商平台创始人</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700">"Prompt定制服务帮助我们优化了客户服务机器人的回答质量，提升了用户体验，同时降低了运营成本。"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- About Us -->
+        <section class="py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">关于我们</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                    <div class="fade-in">
+                        <h3 class="text-2xl font-bold mb-4">我们的使命</h3>
+                        <p class="text-gray-600 mb-6">AI托管云平台致力于为缺乏专业AI知识的创业者提供便捷的大模型定制服务，让人工智能技术更加普及和易用。</p>
+                        <h3 class="text-2xl font-bold mb-4">我们的优势</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-primary mt-1 mr-3"></i>
+                                <span>专业的AI技术团队，拥有丰富的行业经验</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-primary mt-1 mr-3"></i>
+                                <span>灵活的服务方案，满足不同客户的需求</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-primary mt-1 mr-3"></i>
+                                <span>高效的服务流程，快速响应客户需求</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-primary mt-1 mr-3"></i>
+                                <span>持续的技术创新，保持行业领先地位</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="fade-in" style="transition-delay: 0.2s;">
+                        <div class="bg-gradient-to-br from-primary to-secondary rounded-xl p-8 text-white">
+                            <h3 class="text-2xl font-bold mb-4">团队介绍</h3>
+                            <p class="mb-6">我们的团队由来自顶尖科技公司和研究机构的AI专家组成，拥有丰富的行业经验和深厚的技术背景。</p>
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="text-center">
+                                    <div class="bg-white rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-3">
+                                        <i class="fa fa-user text-primary text-2xl"></i>
+                                    </div>
+                                    <h4 class="font-bold">王博士</h4>
+                                    <p class="text-sm text-gray-200">首席技术官</p>
+                                </div>
+                                <div class="text-center">
+                                    <div class="bg-white rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-3">
+                                        <i class="fa fa-user text-primary text-2xl"></i>
+                                    </div>
+                                    <h4 class="font-bold">李经理</h4>
+                                    <p class="text-sm text-gray-200">业务总监</p>
+                                </div>
+                                <div class="text-center">
+                                    <div class="bg-white rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-3">
+                                        <i class="fa fa-user text-primary text-2xl"></i>
+                                    </div>
+                                    <h4 class="font-bold">张工程师</h4>
+                                    <p class="text-sm text-gray-200">技术专家</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Pricing Plans -->
+        <section class="bg-gray-100 py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-12 md:mb-16">定价方案</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                    <!-- Basic Plan -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 fade-in">
+                        <div class="text-center mb-4 md:mb-6">
+                            <h3 class="text-lg md:text-xl font-bold mb-2">基础版</h3>
+                            <p class="text-gray-600 mb-3 md:mb-4">适合个人开发者</p>
+                            <div class="text-2xl md:text-3xl font-bold text-primary mb-2">¥199<span class="text-sm font-normal text-gray-600">/月</span></div>
+                        </div>
+                        <ul class="space-y-2 md:space-y-3 mb-6 md:mb-8">
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-green-500 mr-2 md:mr-3"></i>
+                                <span>100小时云算力</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-green-500 mr-2 md:mr-3"></i>
+                                <span>1次LoRA微调</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-green-500 mr-2 md:mr-3"></i>
+                                <span>5次Prompt定制</span>
+                            </li>
+                            <li class="flex items-center text-gray-400">
+                                <i class="fa fa-times text-gray-400 mr-2 md:mr-3"></i>
+                                <span>技术支持</span>
+                            </li>
+                        </ul>
+                        <a href="register.html" class="block text-center bg-primary text-white py-2 md:py-3 rounded-lg hover:bg-secondary transition-colors">选择方案</a>
+                    </div>
+                    <!-- Professional Plan -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 border-2 border-primary relative fade-in" style="transition-delay: 0.2s;">
+                        <div class="absolute top-0 right-0 bg-primary text-white px-3 md:px-4 py-1 rounded-bl-lg font-medium text-sm">推荐</div>
+                        <div class="text-center mb-4 md:mb-6">
+                            <h3 class="text-lg md:text-xl font-bold mb-2">专业版</h3>
+                            <p class="text-gray-600 mb-3 md:mb-4">适合中小企业</p>
+                            <div class="text-2xl md:text-3xl font-bold text-primary mb-2">¥699<span class="text-sm font-normal text-gray-600">/月</span></div>
+                        </div>
+                        <ul class="space-y-2 md:space-y-3 mb-6 md:mb-8">
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-green-500 mr-2 md:mr-3"></i>
+                                <span>500小时云算力</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-green-500 mr-2 md:mr-3"></i>
+                                <span>5次LoRA微调</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-green-500 mr-2 md:mr-3"></i>
+                                <span>20次Prompt定制</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-green-500 mr-2 md:mr-3"></i>
+                                <span>7x12技术支持</span>
+                            </li>
+                        </ul>
+                        <a href="register.html" class="block text-center bg-primary text-white py-2 md:py-3 rounded-lg hover:bg-secondary transition-colors">选择方案</a>
+                    </div>
+                    <!-- Enterprise Plan -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 fade-in" style="transition-delay: 0.4s;">
+                        <div class="text-center mb-4 md:mb-6">
+                            <h3 class="text-lg md:text-xl font-bold mb-2">企业版</h3>
+                            <p class="text-gray-600 mb-3 md:mb-4">适合大型企业</p>
+                            <div class="text-2xl md:text-3xl font-bold text-primary mb-2">¥1999<span class="text-sm font-normal text-gray-600">/月</span></div>
+                        </div>
+                        <ul class="space-y-2 md:space-y-3 mb-6 md:mb-8">
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-green-500 mr-2 md:mr-3"></i>
+                                <span>2000小时云算力</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-green-500 mr-2 md:mr-3"></i>
+                                <span>20次LoRA微调</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-green-500 mr-2 md:mr-3"></i>
+                                <span>100次Prompt定制</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-green-500 mr-2 md:mr-3"></i>
+                                <span>7x24技术支持</span>
+                            </li>
+                        </ul>
+                        <a href="register.html" class="block text-center bg-primary text-white py-2 md:py-3 rounded-lg hover:bg-secondary transition-colors">选择方案</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- FAQ -->
+        <section class="py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">常见问题</h2>
+                <div class="max-w-3xl mx-auto">
+                    <div class="space-y-4">
+                        <!-- FAQ Item 1 -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden fade-in">
+                            <button class="w-full px-6 py-4 text-left font-bold flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                                <span>什么是云算力租赁？</span>
+                                <i class="fa fa-chevron-down transition-transform"></i>
+                            </button>
+                            <div class="px-6 py-4 bg-gray-50 hidden">
+                                <p class="text-gray-600">云算力租赁是指通过我们的平台租用GPU计算资源，用于AI模型的训练和推理。您可以根据自己的需求选择不同的GPU型号、内存配置和使用时长。</p>
+                            </div>
+                        </div>
+                        <!-- FAQ Item 2 -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden fade-in" style="transition-delay: 0.1s;">
+                            <button class="w-full px-6 py-4 text-left font-bold flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                                <span>LoRA微调是什么？</span>
+                                <i class="fa fa-chevron-down transition-transform"></i>
+                            </button>
+                            <div class="px-6 py-4 bg-gray-50 hidden">
+                                <p class="text-gray-600">LoRA (Low-Rank Adaptation) 是一种高效的模型微调方法，通过低秩分解来减少可训练参数的数量，从而降低计算成本和内存需求。我们的LoRA微调服务支持选择基础模型、上传训练数据和设置微调参数。</p>
+                            </div>
+                        </div>
+                        <!-- FAQ Item 3 -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden fade-in" style="transition-delay: 0.2s;">
+                            <button class="w-full px-6 py-4 text-left font-bold flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                                <span>Prompt定制有什么作用？</span>
+                                <i class="fa fa-chevron-down transition-transform"></i>
+                            </button>
+                            <div class="px-6 py-4 bg-gray-50 hidden">
+                                <p class="text-gray-600">Prompt定制是指根据特定的应用场景和需求，设计和优化模型的提示词，以获得更准确、更符合预期的模型输出。我们的Prompt定制服务提供模板选择、自定义需求描述和应用场景选择功能。</p>
+                            </div>
+                        </div>
+                        <!-- FAQ Item 4 -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden fade-in" style="transition-delay: 0.3s;">
+                            <button class="w-full px-6 py-4 text-left font-bold flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                                <span>如何开始使用我们的服务？</span>
+                                <i class="fa fa-chevron-down transition-transform"></i>
+                            </button>
+                            <div class="px-6 py-4 bg-gray-50 hidden">
+                                <p class="text-gray-600">您需要先注册一个账户，然后登录平台，选择您需要的服务类型，填写相关信息并提交申请。我们的团队会在收到申请后尽快处理，并与您联系确认详情。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Resource Center -->
+        <section class="bg-gray-100 py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">资源中心</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-xl shadow-lg p-6 fade-in">
+                        <div class="bg-indigo-100 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                            <i class="fa fa-book text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">技术文档</h3>
+                        <p class="text-gray-600 mb-4">详细的API文档和使用指南，帮助您快速上手我们的服务。</p>
+                        <a href="#" class="text-primary font-medium hover:underline">查看文档 →</a>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 fade-in" style="transition-delay: 0.2s;">
+                        <div class="bg-indigo-100 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                            <i class="fa fa-video-camera text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">视频教程</h3>
+                        <p class="text-gray-600 mb-4"> step-by-step的视频教程，帮助您理解AI技术和使用方法。</p>
+                        <a href="#" class="text-primary font-medium hover:underline">观看教程 →</a>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 fade-in" style="transition-delay: 0.4s;">
+                        <div class="bg-indigo-100 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                            <i class="fa fa-newspaper-o text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">行业资讯</h3>
+                        <p class="text-gray-600 mb-4">最新的AI行业动态和技术趋势，帮助您把握市场方向。</p>
+                        <a href="#" class="text-primary font-medium hover:underline">阅读资讯 →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Platform Performance -->
+        <section class="bg-gray-100 py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">平台性能</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-xl shadow-lg p-6 fade-in">
+                        <h3 class="text-xl font-bold mb-4">用户增长趋势</h3>
+                        <div class="h-80">
+                            <canvas id="userGrowthChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 fade-in" style="transition-delay: 0.2s;">
+                        <h3 class="text-xl font-bold mb-4">服务使用统计</h3>
+                        <div class="h-80">
+                            <canvas id="serviceUsageChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Trust Indicators -->
+        <section class="bg-gray-100 py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">信任保障</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-xl shadow-lg p-6 text-center fade-in">
+                        <div class="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fa fa-shield text-2xl text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">安全保障</h3>
+                        <p class="text-gray-600">采用银行级加密技术，确保您的数据安全和隐私保护</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 text-center fade-in" style="transition-delay: 0.2s;">
+                        <div class="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fa fa-certificate text-2xl text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">行业认证</h3>
+                        <p class="text-gray-600">获得多项行业认证，确保服务质量和合规性</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 text-center fade-in" style="transition-delay: 0.4s;">
+                        <div class="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fa fa-users text-2xl text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">客户信任</h3>
+                        <p class="text-gray-600">已为超过1000+企业提供服务，获得客户一致好评</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Partners -->
+        <section class="py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">合作伙伴</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div class="bg-white rounded-lg shadow-md p-6 flex items-center justify-center h-24 fade-in">
+                        <div class="text-2xl font-bold text-gray-500">合作伙伴1</div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6 flex items-center justify-center h-24 fade-in" style="transition-delay: 0.1s;">
+                        <div class="text-2xl font-bold text-gray-500">合作伙伴2</div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6 flex items-center justify-center h-24 fade-in" style="transition-delay: 0.2s;">
+                        <div class="text-2xl font-bold text-gray-500">合作伙伴3</div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6 flex items-center justify-center h-24 fade-in" style="transition-delay: 0.3s;">
+                        <div class="text-2xl font-bold text-gray-500">合作伙伴4</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">AI托管云平台</h3>
+                    <p class="text-gray-400">为缺乏专业AI知识的创业者提供便捷的大模型定制服务</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">服务</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="apply_computing.html" class="hover:text-white">云算力租赁</a></li>
+                        <li><a href="apply_lora.html" class="hover:text-white">LoRA微调</a></li>
+                        <li><a href="apply_prompt.html" class="hover:text-white">Prompt定制</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">联系我们</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fa fa-envelope mr-2"></i> contact@aicloud.com</li>
+                        <li><i class="fa fa-phone mr-2"></i> 400-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 AI托管云平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // 检查用户登录状态
+        function checkLoginStatus() {
+            const user = localStorage.getItem('currentUser');
+            const userStatus = document.getElementById('userStatus');
+            const mobileUserStatus = document.getElementById('mobileUserStatus');
+            if (user) {
+                userStatus.innerHTML = `
+                    <a href="dashboard.html" class="text-gray-700 hover:text-primary">用户中心</a>
+                    <button onclick="logout()" class="text-gray-700 hover:text-primary">退出登录</button>
+                `;
+                mobileUserStatus.innerHTML = `
+                    <a href="dashboard.html" class="block text-gray-700 hover:text-primary py-2">用户中心</a>
+                    <button onclick="logout()" class="block text-gray-700 hover:text-primary py-2">退出登录</button>
+                `;
+            } else {
+                userStatus.innerHTML = `
+                    <a href="login.html" class="text-gray-700 hover:text-primary">登录</a>
+                    <a href="register.html" class="bg-primary text-white px-4 py-2 rounded hover:bg-blue-600">注册</a>
+                `;
+                mobileUserStatus.innerHTML = `
+                    <a href="login.html" class="block text-gray-700 hover:text-primary py-2">登录</a>
+                    <a href="register.html" class="block bg-primary text-white px-4 py-2 rounded hover:bg-blue-600">注册</a>
+                `;
+            }
+        }
+        
+        // 移动端菜单切换
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        }
+        
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+        
+        // 滚动动画
+        function handleScrollAnimation() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        }
+        
+        // 页面加载时检查登录状态和初始化滚动动画
+        window.onload = function() {
+            checkLoginStatus();
+            handleScrollAnimation();
+            
+            // 移动端菜单按钮事件监听
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', toggleMobileMenu);
+            }
+        };
+        
+        // 滚动时触发动画
+        window.addEventListener('scroll', handleScrollAnimation);
+        
+        // FAQ切换功能
+        function toggleFaq(element) {
+            const content = element.nextElementSibling;
+            const icon = element.querySelector('i');
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+        
+        // 初始化图表
+        function initCharts() {
+            // 用户增长趋势图表
+            const userGrowthCtx = document.getElementById('userGrowthChart').getContext('2d');
+            new Chart(userGrowthCtx, {
+                type: 'line',
+                data: {
+                    labels: ['1月', '2月', '3月', '4月', '5月', '6月'],
+                    datasets: [{
+                        label: '注册用户数',
+                        data: [120, 300, 500, 800, 1200, 2000],
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // 服务使用统计图表
+            const serviceUsageCtx = document.getElementById('serviceUsageChart').getContext('2d');
+            new Chart(serviceUsageCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['云算力租赁', 'LoRA微调', 'Prompt定制'],
+                    datasets: [{
+                        data: [45, 30, 25],
+                        backgroundColor: [
+                            '#6366f1',
+                            '#06b6d4',
+                            '#f59e0b'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 初始化Three.js 3D背景
+        function initThreeBackground() {
+            const container = document.getElementById('hero3D');
+            if (!container) return;
+            
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x000000, 0);
+            container.appendChild(renderer.domElement);
+            
+            // 创建粒子
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 1000;
+            
+            const posArray = new Float32Array(particlesCount * 3);
+            
+            for (let i = 0; i < particlesCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 10;
+            }
+            
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.02,
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.8
+            });
+            
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
+            
+            camera.position.z = 3;
+            
+            // 动画
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                particlesMesh.rotation.y += 0.001;
+                particlesMesh.rotation.x += 0.0005;
+                
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+            
+            // 响应窗口大小变化
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+        
+        // 页面加载时初始化图表和3D背景
+        window.addEventListener('load', function() {
+            initCharts();
+            initThreeBackground();
+        });
+    </script>
+</body>
+</html>

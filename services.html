@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服务介绍 - AI托管云平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#64748b',
+                        accent: '#10b981',
+                        danger: '#ef4444',
+                    },
+                },
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-primary">
+                <i class="fa fa-cloud"></i> AI托管云平台
+            </a>
+            <div class="flex items-center space-x-4">
+                <a href="services.html" class="text-gray-700 hover:text-primary">服务介绍</a>
+                <span id="userStatus"></span>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-8 text-center">服务介绍</h2>
+            
+            <!-- Computing Power Service -->
+            <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/4 mb-4 md:mb-0">
+                        <div class="bg-blue-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto">
+                            <i class="fa fa-server text-4xl text-primary"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-3/4 md:pl-8">
+                        <h3 class="text-2xl font-bold mb-4">云算力租赁</h3>
+                        <p class="text-gray-600 mb-4">提供多种算力规格选择，满足不同场景的AI训练和推理需求。我们的云算力服务具有以下特点：</p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-2 mb-4">
+                            <li>多种GPU型号可选：NVIDIA A100、H100、RTX 4090等</li>
+                            <li>灵活的内存配置：16GB到128GB</li>
+                            <li>按需使用，按天计费</li>
+                            <li>高速网络连接，低延迟</li>
+                        </ul>
+                        <a href="apply_computing.html" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-blue-600 font-bold">申请服务</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- LoRA Fine-tuning Service -->
+            <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/4 mb-4 md:mb-0">
+                        <div class="bg-green-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto">
+                            <i class="fa fa-cogs text-4xl text-accent"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-3/4 md:pl-8">
+                        <h3 class="text-2xl font-bold mb-4">LoRA微调</h3>
+                        <p class="text-gray-600 mb-4">基于开源大模型（如GLM等），利用您的私有数据进行定制化微调，打造专属于您业务场景的AI模型。</p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-2 mb-4">
+                            <li>支持多种基础模型：GLM-4、GLM-3、Llama 3、Mistral等</li>
+                            <li>专业的数据预处理和模型训练流程</li>
+                            <li>医疗领域案例：通过微调实现医学影像分析和诊断辅助</li>
+                            <li>模型性能评估和优化</li>
+                        </ul>
+                        <a href="apply_lora.html" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-blue-600 font-bold">申请服务</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Prompt Customization Service -->
+            <div class="bg-white rounded-lg shadow-md p-8">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/4 mb-4 md:mb-0">
+                        <div class="bg-purple-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto">
+                            <i class="fa fa-magic text-4xl text-purple-600"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-3/4 md:pl-8">
+                        <h3 class="text-2xl font-bold mb-4">Prompt定制</h3>
+                        <p class="text-gray-600 mb-4">根据您的业务场景和需求，定制专业的Prompt模板，提升大模型的输出质量和准确性。</p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-2 mb-4">
+                            <li>多种行业模板：客服对话、产品描述、内容创作、数据分析等</li>
+                            <li>针对不同应用场景优化：电商、医疗、教育、金融等</li>
+                            <li>专业的Prompt工程技术</li>
+                            <li>效果对比和持续优化</li>
+                        </ul>
+                        <a href="apply_prompt.html" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-blue-600 font-bold">申请服务</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">AI托管云平台</h3>
+                    <p class="text-gray-400">为缺乏专业AI知识的创业者提供便捷的大模型定制服务</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">服务</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="apply_computing.html" class="hover:text-white">云算力租赁</a></li>
+                        <li><a href="apply_lora.html" class="hover:text-white">LoRA微调</a></li>
+                        <li><a href="apply_prompt.html" class="hover:text-white">Prompt定制</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">联系我们</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fa fa-envelope mr-2"></i> contact@aicloud.com</li>
+                        <li><i class="fa fa-phone mr-2"></i> 400-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 AI托管云平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // 检查用户登录状态
+        function checkLoginStatus() {
+            const user = localStorage.getItem('currentUser');
+            const userStatus = document.getElementById('userStatus');
+            if (user) {
+                userStatus.innerHTML = `
+                    <a href="dashboard.html" class="text-gray-700 hover:text-primary">用户中心</a>
+                    <button onclick="logout()" class="text-gray-700 hover:text-primary">退出登录</button>
+                `;
+            } else {
+                userStatus.innerHTML = `
+                    <a href="login.html" class="text-gray-700 hover:text-primary">登录</a>
+                    <a href="register.html" class="bg-primary text-white px-4 py-2 rounded hover:bg-blue-600">注册</a>
+                `;
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+        
+        // 页面加载时检查登录状态
+        window.onload = checkLoginStatus;
+    </script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云算力申请 - AI托管云平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#64748b',
+                        accent: '#10b981',
+                        danger: '#ef4444',
+                    },
+                },
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-primary">
+                <i class="fa fa-cloud"></i> AI托管云平台
+            </a>
+            <div class="flex items-center space-x-4">
+                <a href="services.html" class="text-gray-700 hover:text-primary">服务介绍</a>
+                <span id="userStatus"></span>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8">
+            <h2 class="text-2xl font-bold mb-6">云算力申请</h2>
+            <form id="computingForm">
+                <div class="mb-4">
+                    <label for="gpu_model" class="block text-gray-700 mb-2">GPU型号</label>
+                    <select id="gpu_model" name="gpu_model" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+                        <option value="">请选择</option>
+                        <option value="NVIDIA A100">NVIDIA A100</option>
+                        <option value="NVIDIA H100">NVIDIA H100</option>
+                        <option value="NVIDIA RTX 4090">NVIDIA RTX 4090</option>
+                        <option value="NVIDIA RTX 3090">NVIDIA RTX 3090</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="memory" class="block text-gray-700 mb-2">内存配置</label>
+                    <select id="memory" name="memory" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+                        <option value="">请选择</option>
+                        <option value="16GB">16GB</option>
+                        <option value="32GB">32GB</option>
+                        <option value="64GB">64GB</option>
+                        <option value="128GB">128GB</option>
+                    </select>
+                </div>
+                <div class="mb-6">
+                    <label for="duration" class="block text-gray-700 mb-2">使用时长</label>
+                    <select id="duration" name="duration" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+                        <option value="">请选择</option>
+                        <option value="1天">1天</option>
+                        <option value="7天">7天</option>
+                        <option value="30天">30天</option>
+                        <option value="90天">90天</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-primary text-white py-2 rounded-lg hover:bg-blue-600 font-bold">提交申请</button>
+            </form>
+        </div>
+    </div>
+    
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">AI托管云平台</h3>
+                    <p class="text-gray-400">为缺乏专业AI知识的创业者提供便捷的大模型定制服务</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">服务</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="apply_computing.html" class="hover:text-white">云算力租赁</a></li>
+                        <li><a href="apply_lora.html" class="hover:text-white">LoRA微调</a></li>
+                        <li><a href="apply_prompt.html" class="hover:text-white">Prompt定制</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">联系我们</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fa fa-envelope mr-2"></i> contact@aicloud.com</li>
+                        <li><i class="fa fa-phone mr-2"></i> 400-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 AI托管云平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // 检查用户登录状态
+        function checkLoginStatus() {
+            const user = localStorage.getItem('currentUser');
+            const userStatus = document.getElementById('userStatus');
+            if (user) {
+                userStatus.innerHTML = `
+                    <a href="dashboard.html" class="text-gray-700 hover:text-primary">用户中心</a>
+                    <button onclick="logout()" class="text-gray-700 hover:text-primary">退出登录</button>
+                `;
+            } else {
+                userStatus.innerHTML = `
+                    <a href="login.html" class="text-gray-700 hover:text-primary">登录</a>
+                    <a href="register.html" class="bg-primary text-white px-4 py-2 rounded hover:bg-blue-600">注册</a>
+                `;
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+        
+        // 检查登录状态
+        function checkLogin() {
+            const user = localStorage.getItem('currentUser');
+            if (!user) {
+                window.location.href = 'login.html';
+                return false;
+            }
+            return true;
+        }
+        
+        // 云算力申请表单处理
+        document.getElementById('computingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!checkLogin()) return;
+            
+            const gpu_model = document.getElementById('gpu_model').value;
+            const memory = document.getElementById('memory').value;
+            const duration = document.getElementById('duration').value;
+            
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            
+            // 创建申请
+            const newApplication = {
+                id: Date.now(),
+                user_id: user.id,
+                type: 'computing',
+                status: 'rejected',  // 自动设置为已否决
+                created_at: Date.now(),
+                details: `GPU Model: ${gpu_model}, Memory: ${memory}, Duration: ${duration}`
+            };
+            
+            // 保存申请
+            let applications = JSON.parse(localStorage.getItem('applications')) || [];
+            applications.push(newApplication);
+            localStorage.setItem('applications', JSON.stringify(applications));
+            
+            // 跳转到用户中心
+            alert('申请提交成功，状态：已否决');
+            window.location.href = 'dashboard.html';
+        });
+        
+        // 页面加载时检查登录状态
+        window.onload = function() {
+            checkLoginStatus();
+            checkLogin();
+        };
+    </script>
+</body>
+</html>
